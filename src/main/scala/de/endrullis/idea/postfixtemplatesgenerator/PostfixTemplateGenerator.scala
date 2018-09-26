@@ -1,9 +1,13 @@
 package de.endrullis.idea.postfixtemplatesgenerator
 
 import java.io.{File, PrintStream}
+import java.lang.reflect.Modifier
 
+import org.apache.commons.beanutils.ConstructorUtils
 import org.apache.commons.io.{EndianUtils, FileUtils, FilenameUtils, IOUtils}
 import org.apache.commons.lang3._
+
+import scala.io.Source
 
 /**
  * Template file generator for the Intellij IDEA plugin "Custom Postfix Templates".
@@ -12,13 +16,19 @@ import org.apache.commons.lang3._
  */
 object PostfixTemplateGenerator {
 
-	val templateDir = new File("out")
+	val templateDir = new File("/home/stefan/.IntelliJIdea2018.2/config/plugins/custom-postfix-templates_templates/templates")
 
 	val utilsCollections = List(
 		UtilsCollection("commons-lang", "Apache commons-lang3", classOf[ArrayUtils], classOf[BooleanUtils], classOf[CharSetUtils],
 			classOf[CharUtils], classOf[ClassUtils], classOf[LocaleUtils], classOf[ObjectUtils], classOf[RegExUtils],
 			classOf[SerializationUtils], classOf[StringUtils], classOf[SystemUtils], classOf[ThreadUtils]),
-		UtilsCollection("commons-io", "Apache commons-io", classOf[EndianUtils], classOf[FilenameUtils], classOf[FileUtils], classOf[IOUtils])
+		
+		UtilsCollection("commons-io", "Apache commons-io", classOf[EndianUtils], classOf[FilenameUtils], classOf[FileUtils], classOf[IOUtils]),
+
+		//UtilsCollection("commons-codec", "Apache commons-codec", classOf[])
+		// Hex decode/encode
+
+		UtilsCollection("commons-beanutils", "Apache commons-beanutils", classOf[ConstructorUtils]),
 	)
 	val langs = List(
 		Lang("java", "ARRAY", _.getCanonicalName),
@@ -50,7 +60,13 @@ object PostfixTemplateGenerator {
 	}
 
 	def printTemplates(utilClass: Class[_], lang: Lang, out: PrintStream) {
-		val allMethods = utilClass.getDeclaredMethods.toList.filter(m ⇒ m.getParameterCount > 0 && m.getAnnotation(classOf[Deprecated]) == null)
+		val allMethods = utilClass.getMethods.toList.filter{m ⇒
+			Modifier.isStatic(m.getModifiers) &&
+			Modifier.isPublic(m.getModifiers) &&
+			m.getParameterCount > 0 &&
+			m.getAnnotation(classOf[Deprecated]) == null &&
+			!lang.classMethodExcludes.contains(lang.mapType(m.getParameterTypes.head), m.getName)
+		}
 
 		allMethods.groupBy(_.getName).filterNot(_._1.contains("_")).foreach{case (name, methods) ⇒
 			out.println("." + name + " : " + name)
@@ -93,6 +109,19 @@ object PostfixTemplateGenerator {
 					case BooleanT ⇒ "BOOLEAN"
 					case s ⇒ s.getCanonicalName
 				}
+			}
+		}
+
+		val classMethodExcludes: Set[(String, String)] = {
+			val url = getClass.getResource(s"$name.excludes")
+
+			if (url == null) {
+				Set()
+			} else {
+				Source.fromURL(url, "UTF-8").getLines()
+				.filterNot(_.isEmpty)
+				.map(_.split("→") match { case Array(a, b) ⇒ (a.trim, b.trim) })
+				.toSet
 			}
 		}
 	}

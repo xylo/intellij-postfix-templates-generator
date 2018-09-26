@@ -1,0 +1,4 @@
+java.lang.String → trim
+scala.Array → max
+scala.Array → min
+scala.Array → toArray
