@@ -16,7 +16,7 @@ import scala.io.Source
  */
 object PostfixTemplateGenerator {
 
-	val templateDir = new File("/home/stefan/.IntelliJIdea2018.2/config/plugins/custom-postfix-templates_templates/templates")
+	val templateDir = new File("templates")
 
 	val utilsCollections = List(
 		UtilsCollection("commons-lang", "Apache commons-lang3", classOf[ArrayUtils], classOf[BooleanUtils], classOf[CharSetUtils],
@@ -49,7 +49,7 @@ object PostfixTemplateGenerator {
 		val out = new PrintStream(file)
 		out.println(s"## Templates for ${utilsCollection.description} ##")
 
-		for (utilClass <- utilsCollection.utilClasses) {
+		for (utilClass ← utilsCollection.utilClasses) {
 			out.println()
 			out.println("## " + utilClass.getName.replaceFirst(".*\\.", ""))
 			out.println()
