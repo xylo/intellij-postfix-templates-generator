@@ -1,4 +1,4 @@
-# Template file generator for Custom Postfix Templates
+# Template File Generator for Custom Postfix Templates
 This tool simplifies and automates the generation of [Custom Postfix Tempaltes](https://github.com/xylo/intellij-postfix-templates) for Intellij IDEA.  It scans utility classes and generates postfix templates for its static methods.
 
 ## Background
