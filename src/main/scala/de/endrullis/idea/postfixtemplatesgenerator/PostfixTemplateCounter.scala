@@ -2,6 +2,8 @@ package de.endrullis.idea.postfixtemplatesgenerator
 
 import java.io.File
 
+import resource._
+
 import scala.io.Source
 
 /**
@@ -22,10 +24,11 @@ object PostfixTemplateCounter extends App {
 	println("count = " + count)
 
 	def getCount(file: File): Count = {
-		val lines = Source.fromFile(file, "UTF-8").getLines()
+		val lines = managed(Source.fromFile(file, "UTF-8")).acquireAndGet(_.getLines()
 			.map(_.trim)
 			.filterNot(l ⇒ l.isEmpty || l.startsWith("#"))
 			.toList
+		)
 
 		Count(lines.count(_.startsWith(".")), lines.count(_.contains("→")))
 	}

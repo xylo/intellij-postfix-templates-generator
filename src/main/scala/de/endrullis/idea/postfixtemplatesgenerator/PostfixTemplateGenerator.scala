@@ -6,6 +6,7 @@ import java.lang.reflect.Modifier
 import org.apache.commons.beanutils.ConstructorUtils
 import org.apache.commons.io.{EndianUtils, FileUtils, FilenameUtils, IOUtils}
 import org.apache.commons.lang3._
+import resource._
 
 import scala.io.Source
 
@@ -118,21 +119,22 @@ object PostfixTemplateGenerator {
 			if (url == null) {
 				Set()
 			} else {
-				Source.fromURL(url, "UTF-8").getLines()
-				.filterNot(_.isEmpty)
-				.map(_.split("→") match { case Array(a, b) ⇒ (a.trim, b.trim) })
-				.toSet
+				managed(Source.fromURL(url, "UTF-8")).acquireAndGet(_.getLines()
+					.filterNot(_.isEmpty)
+					.map(_.split("→") match { case Array(a, b) ⇒ (a.trim, b.trim) })
+					.toSet
+				)
 			}
 		}
 	}
 
-	val ShortT = classOf[Short]
-	val IntT = classOf[Int]
-	val LongT = classOf[Long]
-	val FloatT = classOf[Float]
-	val DoubleT = classOf[Double]
-	val CharT = classOf[Char]
-	val ByteT = classOf[Byte]
-	val BooleanT = classOf[Boolean]
+	private val ShortT   = classOf[Short]
+	private val IntT     = classOf[Int]
+	private val LongT    = classOf[Long]
+	private val FloatT   = classOf[Float]
+	private val DoubleT  = classOf[Double]
+	private val CharT    = classOf[Char]
+	private val ByteT    = classOf[Byte]
+	private val BooleanT = classOf[Boolean]
 
 }

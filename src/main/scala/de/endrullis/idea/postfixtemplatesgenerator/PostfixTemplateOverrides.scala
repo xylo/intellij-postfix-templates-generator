@@ -2,6 +2,8 @@ package de.endrullis.idea.postfixtemplatesgenerator
 
 import java.io.File
 
+import resource._
+
 import scala.io.Source
 
 /**
@@ -20,7 +22,7 @@ object PostfixTemplateOverrides extends App {
 	val counts = for (langDir ← templateDir.listFiles(_.isDirectory))
 		           yield determineOverrides(langDir.listFiles(_.getName.endsWith(".postfixTemplates")).toList)
 
-	def determineOverrides(files: List[File]) = {
+	def determineOverrides(files: List[File]) {
 		val conflicts = files.flatMap(determineTemplates).groupBy(tt ⇒ (tt.template, tt.matchingType)).filter(_._2.size > 1).mapValues(_.map(_.file.getName))
 
 		for (((template, matchingType), files) ← conflicts) {
@@ -29,10 +31,11 @@ object PostfixTemplateOverrides extends App {
 	}
 
 	def determineTemplates(file: File) = {
-		val lines = Source.fromFile(file, "UTF-8").getLines()
+		val lines = managed(Source.fromFile(file, "UTF-8")).acquireAndGet(_.getLines()
 			.map(_.trim)
 			.filterNot(l ⇒ l.isEmpty || l.startsWith("#"))
 			.toList
+		)
 
 		var templateName: Option[String] = None
 
