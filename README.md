@@ -11,7 +11,7 @@ We would like to extend an existing type with a new method, e.g.
 
 ### Workaround
 
-Since Java does not allow libraries to extend existing types the common solution is to write a utility class containing the new method which takes as first parameter the source object, e.g.
+Since Java does not allow libraries to extend existing types the common solution is to write a utility class containing the new method which takes as first parameter the source object (and maybe additional method arguments), e.g.
 
     public class StringUtils {
       public static boolean isNumeric(String s) {...}
