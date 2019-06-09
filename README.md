@@ -38,4 +38,4 @@ StringUtils.isNumeric("foo")
 Instead of writing all postfix templates by hand this tool can automate most of this process for you.
 Just add your library as dependency to the `pom.xml`.
 Then open the Scala file `PostfixTemplateGenerator` and add your `UtilsCollection` configuration to the list `utilsCollections`.
-Then run `PostfixTemplateGenerator` and your templates file will be generated to Java and Scala.
+Finally, run `PostfixTemplateGenerator` and your templates file will be generated for Java and Scala.
