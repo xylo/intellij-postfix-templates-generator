@@ -44,6 +44,7 @@ object PostfixTemplateGenerator {
 		// Hex decode/encode
 
 		UtilsCollection("commons-beanutils", "Apache commons-beanutils", classOf[ConstructorUtils]),
+		UtilsCollection("java-math", "java.lang.Math", classOf[Math]),
 	)
 	val langs = List(
 		Lang("java", "ARRAY", _.getCanonicalName),
