@@ -20,11 +20,25 @@ object PostfixTemplateGenerator {
 	val templateDir = new File("templates")
 
 	val utilsCollections = List(
-		UtilsCollection("commons-lang", "Apache commons-lang3", classOf[ArrayUtils], classOf[BooleanUtils], classOf[CharSetUtils],
-			classOf[CharUtils], classOf[ClassUtils], classOf[LocaleUtils], classOf[ObjectUtils], classOf[RegExUtils],
-			classOf[SerializationUtils], classOf[StringUtils], classOf[SystemUtils], classOf[ThreadUtils]),
+		UtilsCollection("commons-lang", "Apache commons-lang3",
+			classOf[ArrayUtils],
+			classOf[BooleanUtils],
+			classOf[CharSetUtils],
+			classOf[CharUtils],
+			classOf[ClassUtils],
+			classOf[LocaleUtils],
+			classOf[ObjectUtils],
+			classOf[RegExUtils],
+			classOf[SerializationUtils],
+			classOf[StringUtils],
+			classOf[SystemUtils],
+			classOf[ThreadUtils]),
 		
-		UtilsCollection("commons-io", "Apache commons-io", classOf[EndianUtils], classOf[FilenameUtils], classOf[FileUtils], classOf[IOUtils]),
+		UtilsCollection("commons-io", "Apache commons-io",
+			classOf[EndianUtils],
+			classOf[FilenameUtils],
+			classOf[FileUtils],
+			classOf[IOUtils]),
 
 		//UtilsCollection("commons-codec", "Apache commons-codec", classOf[])
 		// Hex decode/encode
