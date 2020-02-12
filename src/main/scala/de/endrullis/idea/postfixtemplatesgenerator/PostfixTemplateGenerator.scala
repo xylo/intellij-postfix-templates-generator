@@ -6,6 +6,7 @@ import java.lang.reflect.Modifier
 import org.apache.commons.beanutils.ConstructorUtils
 import org.apache.commons.io.{EndianUtils, FileUtils, FilenameUtils, IOUtils}
 import org.apache.commons.lang3._
+import org.junit.Assert
 import resource._
 
 import scala.io.Source
@@ -39,6 +40,9 @@ object PostfixTemplateGenerator {
 			classOf[FilenameUtils],
 			classOf[FileUtils],
 			classOf[IOUtils]),
+
+		UtilsCollection("junit4", "JUnit 4",
+			classOf[Assert]),
 
 		//UtilsCollection("commons-codec", "Apache commons-codec", classOf[])
 		// Hex decode/encode
