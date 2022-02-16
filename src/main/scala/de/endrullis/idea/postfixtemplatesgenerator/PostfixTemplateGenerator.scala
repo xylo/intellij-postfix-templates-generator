@@ -2,13 +2,13 @@ package de.endrullis.idea.postfixtemplatesgenerator
 
 import java.io.{File, PrintStream}
 import java.lang.reflect.Modifier
-
 import org.apache.commons.beanutils.ConstructorUtils
 import org.apache.commons.io.{EndianUtils, FileUtils, FilenameUtils, IOUtils}
 import org.apache.commons.lang3._
 import org.junit.Assert
 import resource._
 
+import java.nio.file.Files
 import scala.io.Source
 
 /**
@@ -49,6 +49,7 @@ object PostfixTemplateGenerator {
 
 		UtilsCollection("commons-beanutils", "Apache commons-beanutils", classOf[ConstructorUtils]),
 		UtilsCollection("java-math", "java.lang.Math", classOf[Math]),
+		UtilsCollection("java-files", "java.nio.file.Files", classOf[Files]),
 	)
 	val langs = List(
 		Lang("java", "ARRAY", _.getCanonicalName),
